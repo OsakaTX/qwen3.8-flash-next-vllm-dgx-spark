@@ -61,6 +61,10 @@ VocabParallelEmbedding).
 | 4 | ~103 | ~26 |
 | 8 | 162-166 | ~20 |
 
+Those are whole-request wall-clock (prefill included) on prose prompts - the
+conservative read. Measured decode-only on code/structured output (high MTP
+acceptance), single-stream peaks at ~69 tok/s.
+
 Three things these numbers depend on, all defaults in the launch script:
 
 1. **RDMA device passthrough** (`--device /dev/infiniband` + memlock ulimit). The
