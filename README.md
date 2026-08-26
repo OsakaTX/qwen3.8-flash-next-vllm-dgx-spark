@@ -47,13 +47,8 @@ VocabParallelEmbedding).
 
 2. Apply the two Python patches: `python3 patches/apply_patches.py ~/qwen38next-vllm`
 
-3. Build the sigmoid-gate MTP kernel (`qwen4fix/build_qwen4fix.py`). MTP is
-   always on (it is most of your decode speed) - this build only decides WHICH
-   GDN kernel serves it: the fused CUDA one (this build) or vLLM's Triton
-   fallback (no build: skip this step, drop the qwen4fix mount, and set
-   `VLLM_GDN_DECODE_KERNEL=triton` in the launch script). The two measured
-   equal on a TCP-degraded fabric; we have not re-measured the gap with RDMA
-   active, where kernel time matters more. If you skip the build, MTP still works.
+3. Build the sigmoid-gate MTP kernel (`qwen4fix/build_qwen4fix.py`) to enable
+   the fused CUDA GDN kernel.
 
 4. Download the checkpoint once, copy to the second node over your internal fabric,
    then launch with `launch-qwen38next.sh` - worker node first, then head.
