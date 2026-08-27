@@ -48,7 +48,13 @@ VocabParallelEmbedding).
 2. Apply the two Python patches: `python3 patches/apply_patches.py ~/qwen38next-vllm`
 
 3. Build the sigmoid-gate MTP kernel (`qwen4fix/build_qwen4fix.py`) to enable
-   the fused CUDA GDN kernel.
+   the fused CUDA GDN kernel. Runs INSIDE the container (not on the host):
+
+   ```bash
+   docker run --rm --gpus all --entrypoint python3 \
+     -v ~/qwen38next-vllm:/clone -v $(pwd)/qwen4fix:/qwen4fix \
+     eugr/spark-vllm:latest /qwen4fix/build_qwen4fix.py
+   ```
 
 4. Download the checkpoint once, copy to the second node over your internal fabric,
    then launch with `launch-qwen38next.sh` - worker node first, then head.
