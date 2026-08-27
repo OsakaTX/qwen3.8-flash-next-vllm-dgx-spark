@@ -77,10 +77,12 @@ binaries predate that change, so the compiled op is silu-only with the old signa
 Two options:
 
 1. `VLLM_GDN_DECODE_KERNEL=triton` - vLLM's Triton GDN path has correct sigmoid
-   gating. Zero build effort, measured identical single-stream throughput.
+   gating. Zero build effort. Measured equal to the fused kernel on BOTH a
+   TCP-degraded fabric and full RDMA (c1 within 1 tok/s, c4 within 3%): the GDN
+   kernel is not a bottleneck at TP=2 on this model.
 2. Build the PR's kernel standalone (`qwen4fix/`) and keep the fused CUDA path.
-   Verified equivalent: draft acceptance 50.9% vs 48.4% on the Triton path, same
-   per-position curve.
+   Verified numerically equivalent: draft acceptance 50.9% vs 48.4% on the
+   Triton path, same per-position curve.
 
 ## Kernel build fails: `aoti_torch_get_current_cuda_stream is undefined`
 
